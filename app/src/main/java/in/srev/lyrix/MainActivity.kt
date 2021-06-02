@@ -32,12 +32,25 @@ class MainActivity : AppCompatActivity() {
     private lateinit var service: BackendService
     private lateinit var retrofit: Retrofit
     private lateinit var sharedPref: SharedPreferences
+    private lateinit var musicReceiver: MusicReceiver
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        sharedPref = this.getPreferences(Context.MODE_PRIVATE)
+        sharedPref = getSharedPreferences("auth", Context.MODE_PRIVATE)
+
+
+        val logoutButton = findViewById<Button>(R.id.logoutButton)
+        logoutButton.setOnClickListener {
+            val edit = sharedPref.edit()
+            edit.remove(getString(R.string.shared_pref_homeserver))
+            edit.remove(getString(R.string.shared_pref_token))
+            edit.apply()
+            returnToLoginActivity()
+        }
+
+
 
         if (!sharedPref.contains(getString(R.string.shared_pref_token)) || intent.getStringExtra("token") == "" || intent.getStringExtra("host") == "") {
             // the user is not logged in.
@@ -45,27 +58,29 @@ class MainActivity : AppCompatActivity() {
             returnToLoginActivity()
         }
 
+        Log.d("main", "Shared preferences in Main Activity ${sharedPref.all}")
         // get host name
         var host = ""
-        if (intent.getStringExtra("host").toString() != "") {
-            host = intent.getStringExtra("host").toString()
-            with (sharedPref.edit()) {
-                putString(getString(R.string.shared_pref_homeserver), host)
-                apply()
-            }
-        } else if (sharedPref.contains(getString(R.string.shared_pref_homeserver))) {
+        if (sharedPref.contains(getString(R.string.shared_pref_homeserver))) {
             host = sharedPref.getString(getString(R.string.shared_pref_homeserver), "") ?: returnToLoginActivity()
+        } else {
+            returnToLoginActivity()
         }
 
         var token = ""
         if (intent.getStringExtra("token").toString() == "") {
+            Log.d("main", "Got token from intent ${intent.getStringExtra("token").toString()}")
             token = intent.getStringExtra("token").toString()
             with (sharedPref.edit()) {
                 putString(getString(R.string.shared_pref_token), token)
                 apply()
             }
         } else if (sharedPref.contains(getString(R.string.shared_pref_token))) {
+            Log.d("main", "Got token from shared preferences ${sharedPref.getString(getString(R.string.shared_pref_token), "") }")
             token = sharedPref.getString(getString(R.string.shared_pref_token), "") ?: returnToLoginActivity()
+        } else {
+            Log.d("main", "Did not receive token \uD83D\uDC40")
+            returnToLoginActivity()
         }
 
         Log.d("auth", "Authorized with host: $host")
@@ -170,11 +185,17 @@ class MainActivity : AppCompatActivity() {
         filter.addAction("com.andrew.apollo.metachanged")
 
 
-        val receiver = MusicReceiver(this, token)
-        registerReceiver(receiver, filter)
-        this.createNotification("Lyrix", "is now running")
+        musicReceiver = MusicReceiver(this, token)
+        registerReceiver(musicReceiver, filter)
+        createNotification("Lyrix", "is now running")
 
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterReceiver(musicReceiver)
+    }
+
 
     private fun restoreBroadcastSwitchStatus() {
         val broadcastSwitch = findViewById<Switch>(R.id.broadcastSwitch)
@@ -199,7 +220,6 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, LoginActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_TASK_ON_HOME
         startActivity(intent)
-        finish()
         return ""
     }
 
@@ -209,7 +229,7 @@ class MainActivity : AppCompatActivity() {
         }
         val pendingIntent: PendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
         val builder = NotificationCompat.Builder(this, ANDROID_CHANNEL_ID)
-            .setSmallIcon(android.R.color.transparent)
+            .setSmallIcon(android.R.drawable.ic_media_play)
             .setContentTitle(track)
             .setContentText(artist)
             .setContentIntent(pendingIntent)
@@ -242,13 +262,14 @@ class MainActivity : AppCompatActivity() {
     fun updateServer(token: String, track: String, artist: String){
         // Request a string response from the provided URL.
         val map = JSONObject()
-        if (artist != "" && track != "") {
-            map.put("artist", artist)
-            map.put("song", track)
+        if (artist == "" || track == "") {
+            return
         }
-
+        map.put("artist", artist)
+        map.put("track", track)
+        Log.d("lyrix.api", "sending post request.")
         postData(service, token, map)
-        Log.e("requests", "sent post request.")
+        Log.d("lyrix.api", "sent post request.")
     }
 }
 
@@ -315,20 +336,25 @@ fun postData(service: BackendService, token: String, data: JSONObject) {
     // Create RequestBody ( We're not using any converter, like GsonConverter, MoshiConverter e.t.c, that's why we use RequestBody )
     val requestBody = jsonObjectString.toRequestBody("application/json".toMediaTypeOrNull())
 
+
     CoroutineScope(Dispatchers.IO).launch {
         // Do the POST request and get response
-        val response = service.setCurrentPlayingSong(requestBody, "Bearer $token")
+        Log.d("lyrix.api", "Sending data to server")
+        try {
+            val response = service.setCurrentPlayingSong(requestBody, "Bearer $token")
 
-        withContext(Dispatchers.Main) {
-            if (response.isSuccessful) {
-                Log.e("lyrix.api", "Data successfully posted to the server")
-
-            } else {
-
-                Log.e("RETROFIT_ERROR", response.code().toString())
-
+            withContext(Dispatchers.Main) {
+                if (response.isSuccessful) {
+                    Log.e("lyrix.api", "Data successfully posted to the server")
+                } else {
+                    Log.e("RETROFIT_ERROR", response.code().toString())
+                }
             }
+        } catch (e: Exception) {
+            Log.e("lyrix.api", "${e.message.toString()} ${e.stackTraceToString().toString()}")
+            return@launch
         }
+
     }
 }
 

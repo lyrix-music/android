@@ -94,7 +94,7 @@ class LoginActivity : AppCompatActivity() {
                         Log.d("lyrix.api", jsonString)
 
                         val convertedObject = JsonParser.parseString(jsonString).asJsonObject
-                        val token = convertedObject["token"].toString()
+                        val token = convertedObject["token"].toString().replace("\"", "")
                         Log.d("login", "Authorization token $token")
                         if (token == "") {
                             Toast.makeText(this@LoginActivity, "Login failed. Contact your server admin for more details.", Toast.LENGTH_SHORT).show()
@@ -102,14 +102,16 @@ class LoginActivity : AppCompatActivity() {
                         }
 
                         Toast.makeText(this@LoginActivity, "Login successful.", Toast.LENGTH_SHORT).show()
-                        val sharedPref = this@LoginActivity.getPreferences(Context.MODE_PRIVATE)
+                        val sharedPref = getSharedPreferences("auth", Context.MODE_PRIVATE)
                         with (sharedPref.edit()) {
                             putString(getString(R.string.shared_pref_token), token)
                             putString(getString(R.string.shared_pref_homeserver), host)
                             apply()
                         }
+                        Log.d("login", "Shared Preferences: ${sharedPref.all}")
+                        Log.d("login", "Passing token:($token), and host:($host) to Main Activity intent")
+                        launchMainActivity()
 
-                        launchMainActivity(token, host)
                     } else {
                         Toast.makeText(this@LoginActivity, "Login failed. Are you sure if your username and password is correct?", Toast.LENGTH_SHORT).show()
                         Log.e("RETROFIT_ERROR", response.code().toString())
@@ -128,11 +130,9 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
-    private fun launchMainActivity(token: String, host: String) {
+    private fun launchMainActivity() {
         val intent = Intent(this, MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        intent.putExtra("token", token)
-        intent.putExtra("host", host)
         startActivity(intent)
 
 
