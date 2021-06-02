@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Lyrix</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+
+
+    <string name="shared_pref_homeserver">"in.srev.lyrix.HOMESERVER"</string>
+    <string name="shared_pref_token">"in.srev.lyrix.AUTH_TOKEN"</string>
+    <string name="shared_pref_broadcast_switch">"in.srev.lyrix.BROADCAST_SWITCH_LAST_USED_ENABLED"</string>
+</resources>

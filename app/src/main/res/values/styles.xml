@@ -1,0 +1,12 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <!-- This code is for changing the color of the bar. -->
+        <!-- Type your colour code which you want to set in colorPrimary item -->
+        <item name="colorPrimary">@color/purple_light</item>
+        <item name="colorPrimaryDark">@color/purple_dark</item>
+    </style>
+
+</resources>

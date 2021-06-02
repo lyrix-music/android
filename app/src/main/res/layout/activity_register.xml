@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegisterActivity">
+
+    <EditText
+        android:id="@+id/registerUsernameTextEditView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:ems="10"
+        android:hint="@satoshi@nakamoto.org"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.42000002" />
+
+    <EditText
+        android:id="@+id/registerPasswordTextEditView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/prompt_password"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="@+id/registerUsernameTextEditView"
+        app:layout_constraintStart_toStartOf="@+id/registerUsernameTextEditView"
+        app:layout_constraintTop_toBottomOf="@+id/registerUsernameTextEditView" />
+
+    <Button
+        android:id="@+id/registerLoginButton"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Login"
+        app:layout_constraintEnd_toEndOf="@+id/registerRegisterButton"
+        app:layout_constraintStart_toStartOf="@+id/registerRegisterButton"
+        app:layout_constraintTop_toBottomOf="@+id/registerRegisterButton" />
+
+    <Button
+        android:id="@+id/registerRegisterButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Register"
+        app:layout_constraintEnd_toEndOf="@+id/registerPasswordTextEditView"
+        app:layout_constraintStart_toStartOf="@+id/registerTelegramIdTextEditView"
+        app:layout_constraintTop_toBottomOf="@+id/registerTelegramIdTextEditView" />
+
+    <EditText
+        android:id="@+id/registerTelegramIdTextEditView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Telegram ID"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="@+id/registerPasswordTextEditView"
+        app:layout_constraintStart_toStartOf="@+id/registerPasswordTextEditView"
+        app:layout_constraintTop_toBottomOf="@+id/registerPasswordTextEditView" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Register with lyrix to start the whole new music experience"
+        app:layout_constraintBottom_toTopOf="@+id/registerUsernameTextEditView"
+        app:layout_constraintEnd_toEndOf="@+id/registerUsernameTextEditView"
+        app:layout_constraintStart_toStartOf="@+id/registerUsernameTextEditView" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
