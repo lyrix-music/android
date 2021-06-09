@@ -12,6 +12,9 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.github.javiersantos.appupdater.AppUpdater
+import com.github.javiersantos.appupdater.enums.Display
+import com.github.javiersantos.appupdater.enums.UpdateFrom
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -37,6 +40,23 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+
+        val appUpdater = AppUpdater(this)
+            .setDisplay(Display.NOTIFICATION)
+            .setDisplay(Display.SNACKBAR)
+            .setUpdateFrom(UpdateFrom.GITHUB)
+            .setUpdateFrom(UpdateFrom.FDROID)
+            .setUpdateFrom(UpdateFrom.JSON)
+            .setGitHubUserAndRepo("srevinsaju", "lyrix")
+            .setUpdateJSON("https://raw.githubusercontent.com/srevinsaju/lyrix/main/update/changelog.json")
+
+
+
+
+
+
+        appUpdater.start()
 
         sharedPref = getSharedPreferences("auth", Context.MODE_PRIVATE)
 
