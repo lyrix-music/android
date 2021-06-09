@@ -49,12 +49,8 @@ class MainActivity : AppCompatActivity() {
             .setUpdateFrom(UpdateFrom.FDROID)
             .setUpdateFrom(UpdateFrom.JSON)
             .setGitHubUserAndRepo("srevinsaju", "lyrix")
+            .setIcon(android.R.drawable.stat_notify_sync)
             .setUpdateJSON("https://raw.githubusercontent.com/srevinsaju/lyrix/main/update/changelog.json")
-
-
-
-
-
 
         appUpdater.start()
 
