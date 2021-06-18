@@ -54,16 +54,6 @@
         app:layout_constraintStart_toStartOf="@+id/clearStatusButton"
         app:layout_constraintTop_toBottomOf="@+id/clearStatusButton" />
 
-    <Switch
-        android:id="@+id/broadcastSwitch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="Broadcast"
-        app:layout_constraintBottom_toBottomOf="@+id/startBroadcastButton"
-        app:layout_constraintStart_toEndOf="@+id/startBroadcastButton"
-        app:layout_constraintTop_toTopOf="@+id/startBroadcastButton" />
-
     <TextView
         android:id="@+id/lastRefreshedLabel"
         android:layout_width="wrap_content"
@@ -82,5 +72,17 @@
         android:text="Logout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <ToggleButton
+        android:id="@+id/toggleButton"
+        style="@android:style/Widget.Material.Button.Toggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ToggleButton"
+        android:textOff="BROADCAST OFF"
+        android:textOn="BROADCAST ON"
+        app:layout_constraintBottom_toBottomOf="@+id/startBroadcastButton"
+        app:layout_constraintStart_toEndOf="@+id/startBroadcastButton"
+        app:layout_constraintTop_toTopOf="@+id/startBroadcastButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
