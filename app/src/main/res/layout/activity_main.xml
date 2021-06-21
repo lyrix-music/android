@@ -10,13 +10,15 @@
         android:id="@+id/playingRightNow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:text="Welcome to"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.22000003" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/trackName"
@@ -38,40 +40,31 @@
 
     <Button
         android:id="@+id/clearStatusButton"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        style="@style/TextAppearance.MaterialComponents.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
         android:text="Clear status"
         app:layout_constraintStart_toStartOf="@+id/artistName"
         app:layout_constraintTop_toBottomOf="@+id/artistName" />
-
-    <Button
-        android:id="@+id/startBroadcastButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Refresh"
-        app:layout_constraintStart_toStartOf="@+id/clearStatusButton"
-        app:layout_constraintTop_toBottomOf="@+id/clearStatusButton" />
 
     <TextView
         android:id="@+id/lastRefreshedLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Not synced with server yet."
-        app:layout_constraintStart_toStartOf="@+id/startBroadcastButton"
-        app:layout_constraintTop_toBottomOf="@+id/startBroadcastButton" />
+        app:layout_constraintStart_toStartOf="@+id/clearStatusButton"
+        app:layout_constraintTop_toBottomOf="@+id/clearStatusButton" />
 
     <Button
         android:id="@+id/logoutButton"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="32dp"
         android:text="Logout"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@+id/toggleButton"
+        app:layout_constraintStart_toEndOf="@+id/toggleButton"
+        app:layout_constraintTop_toTopOf="@+id/toggleButton" />
 
     <ToggleButton
         android:id="@+id/toggleButton"
@@ -81,8 +74,20 @@
         android:text="ToggleButton"
         android:textOff="BROADCAST OFF"
         android:textOn="BROADCAST ON"
-        app:layout_constraintBottom_toBottomOf="@+id/startBroadcastButton"
-        app:layout_constraintStart_toEndOf="@+id/startBroadcastButton"
-        app:layout_constraintTop_toTopOf="@+id/startBroadcastButton" />
+        app:layout_constraintBottom_toBottomOf="@+id/clearStatusButton"
+        app:layout_constraintStart_toEndOf="@+id/clearStatusButton"
+        app:layout_constraintTop_toTopOf="@+id/clearStatusButton" />
+
+    <TextView
+        android:id="@+id/lyricsView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/lastRefreshedLabel"
+        app:layout_constraintTop_toBottomOf="@+id/lastRefreshedLabel" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

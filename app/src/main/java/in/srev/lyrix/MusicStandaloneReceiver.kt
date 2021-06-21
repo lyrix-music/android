@@ -30,7 +30,7 @@ class MusicStandaloneReceiver : BroadcastReceiver() {
             val track = it.getStringExtra("track").toString()
             val playing = it.getBooleanExtra("playing", false)
             lyrix.createNotification(track, artist)
-            lyrix.setCurrentListeningSong(track, artist)
+            lyrix.setCurrentListeningSong(track, artist, null)
             Log.e("Music", "playing: $playing")
             Log.e("Music", "artist: $artist")
             Log.e("Music", "track: $track")

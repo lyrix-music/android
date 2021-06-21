@@ -86,23 +86,53 @@ class Lyrix {
     }
 
     fun clearListeningSong() {
-        setCurrentListeningSong("", "")
+        setCurrentListeningSong("", "", null)
         Toast.makeText(context, "Current song has been cleared from server.", Toast.LENGTH_SHORT).show()
     }
 
+    fun getLyrics(): String? {
+        Log.d("lyrix.lyrics", "Gettings lyrics")
+        var lyrics: String? = ""
+        CoroutineScope(Dispatchers.IO).launch {
+            // Do the POST request and get response
+            Log.d("lyrix.lyrics", "Sending data to server")
+            try {
+                val response = service.getLyrics("Bearer ${token()}")
 
-    fun setCurrentListeningSong(track: String, artist: String) {
+                withContext(Dispatchers.Main) {
+                    if (response.isSuccessful) {
+                        Log.e("lyrix.lyrics", "Data successfully posted to the server")
+                        lyrics = response.body()?.string()
+                        Log.e("lyrix.lyrics", lyrics.toString())
+
+                    } else {
+                        Log.e("RETROFIT_ERROR", response.code().toString())
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e("lyrix.api", "${e.message.toString()} ${e.stackTraceToString().toString()}")
+                return@launch
+            }
+
+        }
+        Log.e("lyrix.lyrics", "Sending the lyrics back to the callee")
+        return lyrics
+
+    }
+
+    fun setCurrentListeningSong(track: String, artist: String, callback: (()->Unit)?) {
         // Request a string response from the provided URL.
         val map = JSONObject()
         map.put("artist", artist)
         map.put("track", track)
 
         Log.d("lyrix.api", "sending post request.")
-        postData(map)
+        postData(map, callback)
         Log.d("lyrix.api", "sent post request.")
+
     }
 
-    private fun postData(data: JSONObject) {
+    private fun postData(data: JSONObject, callback: (() -> Unit)?) {
 
         // Convert JSONObject to String
         val jsonObjectString = data.toString()
@@ -118,6 +148,10 @@ class Lyrix {
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
                         Log.e("lyrix.api", "Data successfully posted to the server")
+                        if (data["track"] != "") {
+                            callback?.invoke()
+                            return@withContext
+                        }
                     } else {
                         Log.e("RETROFIT_ERROR", response.code().toString())
                     }

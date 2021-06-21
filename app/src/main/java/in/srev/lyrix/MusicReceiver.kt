@@ -33,7 +33,7 @@ class MusicReceiver(private val mainActivity: MainActivity, private val lyrix: L
             val artistName = mainActivity.findViewById<TextView>(R.id.artistName)
             val broadcastSwitch = mainActivity.findViewById<ToggleButton>(R.id.toggleButton)
             val lastRefreshed = mainActivity.findViewById<TextView>(R.id.lastRefreshedLabel)
-
+            val lyricsView = mainActivity.findViewById<TextView>(R.id.lyricsView)
             val showStatus = broadcastSwitch.isChecked && (artist != "" || track != "")
             Log.e(
                 "lyrix.ui",
@@ -45,9 +45,14 @@ class MusicReceiver(private val mainActivity: MainActivity, private val lyrix: L
                 trackName.text = track
                 Log.e("Notification", "created notification")
                 lyrix.createNotification(track.toString(), artist.toString())
-                lyrix.setCurrentListeningSong(track.toString(), artist.toString())
+                lyrix.setCurrentListeningSong(track.toString(), artist.toString()) {
+                    Log.d("lyrix.lyrics", "Setting lyrics text box ${lyrix.getLyrics().toString()}")
+                    lyricsView.text = lyrix.getLyrics().toString()
+                }
+
                 val now = Date().toLocaleString()
                 lastRefreshed.text = "Last synced on $now"
+
             } else {
                 playingNow.text = "Welcome to"
                 trackName.text = "Lyrix"

@@ -3,10 +3,7 @@ package `in`.srev.lyrix
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.Header
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 interface BackendService {
 
@@ -20,5 +17,8 @@ interface BackendService {
 
     @POST("/user/player/local/current_song")
     suspend fun setCurrentPlayingSong(@Body requestBody: RequestBody, @Header("Authorization") token: String): Response<ResponseBody>
+
+    @GET("/user/player/local/current_song/lyrics")
+    suspend fun getLyrics(@Header("Authorization") token: String): Response<ResponseBody>
 
 }
