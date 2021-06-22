@@ -60,6 +60,18 @@ class Lyrix {
         }
     }
 
+
+    fun isScrobbleEnabled(): Boolean {
+        return sharedPref.getBoolean(context.getString(R.string.shared_pref_scrobble), false)
+    }
+
+    fun setScrobbleEnabled(enabled: Boolean) {
+        with (sharedPref.edit()) {
+            putBoolean(context.getString(R.string.shared_pref_scrobble), enabled)
+            apply()
+        }
+    }
+
     // logout a user by destroying the values from the shared preferences
     fun logoutUser() {
         val edit = sharedPref.edit()
@@ -90,7 +102,7 @@ class Lyrix {
         Toast.makeText(context, "Current song has been cleared from server.", Toast.LENGTH_SHORT).show()
     }
 
-    fun getLyrics(): String? {
+    fun getLyrics(callback: ((lyrics: String) -> Unit)?) {
         Log.d("lyrix.lyrics", "Gettings lyrics")
         var lyrics: String? = ""
         CoroutineScope(Dispatchers.IO).launch {
@@ -101,9 +113,12 @@ class Lyrix {
 
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
-                        Log.e("lyrix.lyrics", "Data successfully posted to the server")
-                        lyrics = response.body()?.string()
-                        Log.e("lyrix.lyrics", lyrics.toString())
+                        Log.e("lyrix.lyrics", "Lyrics successfully received to the server")
+                        lyrics = response.body()?.string().toString()
+                        if (lyrics != "") {
+                            callback?.invoke(lyrics!!)
+                            return@withContext
+                        }
 
                     } else {
                         Log.e("RETROFIT_ERROR", response.code().toString())
@@ -115,9 +130,6 @@ class Lyrix {
             }
 
         }
-        Log.e("lyrix.lyrics", "Sending the lyrics back to the callee")
-        return lyrics
-
     }
 
     fun setCurrentListeningSong(track: String, artist: String, callback: (()->Unit)?) {
@@ -125,6 +137,9 @@ class Lyrix {
         val map = JSONObject()
         map.put("artist", artist)
         map.put("track", track)
+        map.put("scrobble", isScrobbleEnabled())
+        map.put("source", "android")
+
 
         Log.d("lyrix.api", "sending post request.")
         postData(map, callback)
@@ -163,8 +178,6 @@ class Lyrix {
 
         }
     }
-
-
 
     private fun createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because

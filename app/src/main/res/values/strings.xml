@@ -14,4 +14,5 @@
     <string name="shared_pref_homeserver">"in.srev.lyrix.HOMESERVER"</string>
     <string name="shared_pref_token">"in.srev.lyrix.AUTH_TOKEN"</string>
     <string name="shared_pref_broadcast_switch">"in.srev.lyrix.BROADCAST_SWITCH_LAST_USED_ENABLED"</string>
+    <string name="shared_pref_scrobble">"in.srev.lyrix.SCROBBLE_ENABLED"</string>
 </resources>

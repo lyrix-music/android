@@ -8,6 +8,11 @@ import android.util.Log
 import java.util.*
 
 class MusicStandaloneReceiver : BroadcastReceiver() {
+
+    private var lastPlayedTrack: String = ""
+    private var lastPlayedArtist: String = ""
+
+
     @SuppressLint("SetTextI18n")
     override fun onReceive(context: Context?, intent: Intent?) {
 
@@ -29,6 +34,15 @@ class MusicStandaloneReceiver : BroadcastReceiver() {
             val artist = it.getStringExtra("artist").toString()
             val track = it.getStringExtra("track").toString()
             val playing = it.getBooleanExtra("playing", false)
+
+
+            if ((artist == lastPlayedArtist && track == lastPlayedTrack) || !playing) {
+                return
+            }
+
+            lastPlayedArtist = artist
+            lastPlayedTrack = track
+
             lyrix.createNotification(track, artist)
             lyrix.setCurrentListeningSong(track, artist, null)
             Log.e("Music", "playing: $playing")

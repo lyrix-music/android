@@ -4,6 +4,9 @@ import android.content.*
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.github.javiersantos.appupdater.AppUpdater
@@ -42,24 +45,12 @@ class MainActivity : AppCompatActivity() {
 
         appUpdater.start()
 
-
-        // connect logoout button
-        val logoutButton = findViewById<Button>(R.id.logoutButton)
-        logoutButton.setOnClickListener {
-            lyrix.logoutUser()
-            returnToLoginActivity()
-        }
-
         // check if the user is logged in.
         if (!lyrix.isUserLoggedIn()) {
             // the user is not logged in.
             // redirect to the login the screen
             returnToLoginActivity()
         }
-
-        // add listener on clear button
-        val clearButton = findViewById<Button>(R.id.clearStatusButton)
-        clearButton.setOnClickListener { lyrix.clearListeningSong() }
 
         val filter = registerBroadcastListener()
         val musicReceiver = MusicReceiver(mainActivity = this, lyrix = lyrix)
@@ -74,9 +65,11 @@ class MainActivity : AppCompatActivity() {
             if (broadcastToggleButton.isChecked) {
                 actionOnService(Actions.START)
                 // register the broadcast
+                lyrix.setBroadcastEnabled(true)
                 registerReceiver(musicReceiver, filter)
             } else {
                 actionOnService(Actions.STOP)
+                lyrix.setBroadcastEnabled(false)
                 try {
                     unregisterReceiver(musicReceiver)
                 } catch (e: IllegalArgumentException) {
@@ -84,6 +77,13 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
+        val scrobblerSwitch = findViewById<Switch>(R.id.scrobbleSwitch)
+        scrobblerSwitch.isChecked = lyrix.isScrobbleEnabled()
+        scrobblerSwitch.setOnClickListener {
+            lyrix.setScrobbleEnabled(scrobblerSwitch.isChecked)
+        }
+
 
 
     }
@@ -210,5 +210,35 @@ class MainActivity : AppCompatActivity() {
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_TASK_ON_HOME
         startActivity(intent)
         return ""
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle item selection
+        return when (item.itemId) {
+            R.id.logoutMenuItem -> {
+                lyrix.logoutUser()
+                returnToLoginActivity()
+                true
+            }
+            R.id.clearStatusMenuItem -> {
+                lyrix.clearListeningSong()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onDestroy() {
+        lyrix.clearListeningSong()
+        lyrix.setBroadcastEnabled(false)
+        lyrix.setScrobbleEnabled(false)
+        actionOnService(Actions.STOP)
+        super.onDestroy()
     }
 }
