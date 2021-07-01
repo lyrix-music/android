@@ -15,4 +15,9 @@
     <string name="shared_pref_token">"in.srev.lyrix.AUTH_TOKEN"</string>
     <string name="shared_pref_broadcast_switch">"in.srev.lyrix.BROADCAST_SWITCH_LAST_USED_ENABLED"</string>
     <string name="shared_pref_scrobble">"in.srev.lyrix.SCROBBLE_ENABLED"</string>
+    <string name="login_main_greeting">Welcome back!</string>
+    <string name="login_greeting_subtext">Sign in to Lyrix to start scrobbling, sharing your favorite songs with your friends, and get lyrics for the song.</string>
+    <string name="register_greeting_main">Welcome to Lyrix!</string>
+    <string name="logo_content_description">Lyrix logo</string>
+    <string name="register_button__telegramId">Telegram ID</string>
 </resources>
