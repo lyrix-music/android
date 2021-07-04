@@ -6,5 +6,6 @@
     "- Improve User Interface",
     "- Fix bugs in broadcast button and scrobble button",
     "- Get similar songs that you may like with 'Related' button!"
-  ]
+  ],
+  "downloadUrl": "https://github.com/lyrix-music/android/releases/download/continuous/app-debug.apk"
 }
