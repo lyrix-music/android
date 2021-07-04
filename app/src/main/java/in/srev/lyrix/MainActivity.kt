@@ -7,18 +7,15 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.*
-import androidx.annotation.ColorInt
 import androidx.appcompat.app.AppCompatActivity
 import com.github.javiersantos.appupdater.AppUpdater
 import com.github.javiersantos.appupdater.enums.Display
 import com.github.javiersantos.appupdater.enums.UpdateFrom
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.color.MaterialColors
 import java.util.*
 
 
@@ -66,8 +63,10 @@ class MainActivity : AppCompatActivity() {
         val musicReceiver = MusicReceiver(mainActivity = this, lyrix = lyrix)
 
         val scrobbleToggleButton = findViewById<MaterialButton>(R.id.main__scrobbleToggleButton)
-        if (scrobblingEnabled) {
+        if (lyrix.isScrobbleEnabled()) {
+            scrobblingEnabled = true
             scrobbleToggleButton.text = getString(R.string.scrobbling)
+            scrobbleToggleButton.isChecked = true
         }
         scrobbleToggleButton.setOnClickListener{
             scrobblingEnabled = !scrobblingEnabled
@@ -80,8 +79,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         val broadcastToggleButton = findViewById<MaterialButton>(R.id.main__broadcastToggleButton)
-        if (broadcastEnabled) {
+        if (lyrix.isBroadcastEnabled()) {
+            broadcastEnabled = true
             broadcastToggleButton.text = getString(R.string.broadcasting)
+            broadcastToggleButton.isChecked = true
         }
         broadcastToggleButton.setOnClickListener{
 
