@@ -14,7 +14,7 @@
 
 <div align="center">
 
-[![forthebadge made-for-android](https://forthebadge.com/images/badges/built-for-android.svg)](https://golang.org/)
+[![forthebadge made-for-android](https://forthebadge.com/images/badges/built-for-android.svg)](https://kotlinlang.org/)
 
 </div>
 
