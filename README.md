@@ -18,9 +18,9 @@
 
 </div>
 
-
-![Lyrix Android in action](./docs/img/screenshot.png)
-
+<p align="center">
+    <img src="./docs/img/screenshot.png" alt="Logo" height=512 alt="Android screenshot">
+</p>
 
 Getting Started
 ---------------
