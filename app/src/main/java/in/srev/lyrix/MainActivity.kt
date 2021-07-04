@@ -1,9 +1,6 @@
 package `in`.srev.lyrix
 
 import android.content.*
-import android.content.res.ColorStateList
-import android.content.res.Resources.Theme
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -12,10 +9,11 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import com.github.javiersantos.appupdater.AppUpdater
-import com.github.javiersantos.appupdater.enums.Display
-import com.github.javiersantos.appupdater.enums.UpdateFrom
+import androidx.core.content.edit
 import com.google.android.material.button.MaterialButton
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.*
 
 
@@ -25,6 +23,7 @@ const val ANDROID_CHANNEL_ID = "in.srev.lyrix.ANDROID"
 class MainActivity : AppCompatActivity() {
 
     private lateinit var lyrix: Lyrix
+    private var updaterDismissed: Boolean = false
     private var scrobblingEnabled: Boolean = false
     var broadcastEnabled: Boolean = false
 
@@ -38,20 +37,20 @@ class MainActivity : AppCompatActivity() {
         lyrix = Lyrix()
         lyrix.create(this)
 
-
-        // create an auto updater for the app
-        val appUpdater = AppUpdater(this)
-            .setDisplay(Display.NOTIFICATION)
-            .setDisplay(Display.SNACKBAR)
-            .setUpdateFrom(UpdateFrom.GITHUB)
-            .setUpdateFrom(UpdateFrom.FDROID)
-            .setUpdateFrom(UpdateFrom.JSON)
-            .setGitHubUserAndRepo("srevinsaju", "lyrix")
-            .setIcon(android.R.drawable.stat_notify_sync)
-            .setUpdateJSON("https://raw.githubusercontent.com/srevinsaju/lyrix/main/update/changelog.json")
-
-        appUpdater.start()
-
+        Log.d("lyrix.update", "${System.currentTimeMillis() - lyrix.getSharedPreferences().getLong("last_update_request", 0)} since last update request" )
+        if (!updaterDismissed && System.currentTimeMillis() - lyrix.getSharedPreferences().getLong("last_update_request", 0) > 3.6e+6) {
+            Log.d("lyrix.update", "Checking for updates")
+            val updater = Updater(this, "https://raw.githubusercontent.com/lyrix-music/android/continuous/update/changelog.json")
+            Log.d("lyrix.info", "Lyrix v${updater.getCurrentVersion()}")
+            CoroutineScope(Dispatchers.Main).launch {
+                updater.start()
+                updaterDismissed = true
+                lyrix.getSharedPreferences().edit {
+                    this.putLong("last_update_request", System.currentTimeMillis())
+                    this.apply()
+                }
+            }
+        }
         // check if the user is logged in.
         if (!lyrix.isUserLoggedIn()) {
             // the user is not logged in.
