@@ -24,7 +24,7 @@ import java.nio.charset.Charset
 class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login2)
+        setContentView(R.layout.activity_login)
 
 
         val userIdView = findViewById<EditText>(R.id.loginUsernameTextEditView)
