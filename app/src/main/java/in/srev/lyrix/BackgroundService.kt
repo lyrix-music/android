@@ -15,7 +15,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
-class BackgroundService: Service() {
+class BackgroundService : Service() {
 
     private var wakeLock: PowerManager.WakeLock? = null
     private var isServiceStarted = false
@@ -36,7 +36,10 @@ class BackgroundService: Service() {
             when (action) {
                 Actions.START.name -> startService()
                 Actions.STOP.name -> stopService()
-                else -> Log.d("lyrix:service", "This should never happen. No action in the received intent")
+                else -> Log.d(
+                    "lyrix:service",
+                    "This should never happen. No action in the received intent"
+                )
             }
         } else {
             Log.d(
@@ -47,8 +50,6 @@ class BackgroundService: Service() {
         // by returning this we make sure the service is restarted if the system kills the service
         return START_STICKY
     }
-
-
 
 
     override fun onCreate() {
@@ -72,13 +73,13 @@ class BackgroundService: Service() {
         Toast.makeText(this, "Service starting its task", Toast.LENGTH_SHORT).show()
         isServiceStarted = true
         setServiceState(this, ServiceState.STARTED)
-        
+
 
         // we need this lock so our service gets not affected by Doze Mode
         wakeLock =
             (getSystemService(Context.POWER_SERVICE) as PowerManager).run {
                 newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "EndlessService::lock").apply {
-                    acquire(30*60*1000L /*30 minutes*/)
+                    acquire(30 * 60 * 1000L /*30 minutes*/)
                 }
             }
 
@@ -113,7 +114,7 @@ class BackgroundService: Service() {
         }
         isServiceStarted = false
         setServiceState(this, ServiceState.STOPPED)
-        
+
     }
 
 
@@ -122,7 +123,8 @@ class BackgroundService: Service() {
         // depending on the Android API that we're dealing with we will have
         // to use a specific method to create the notification
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager;
+            val notificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             val channel = NotificationChannel(
                 ANDROID_CHANNEL_ID,
                 "Lyrix Service channel",
@@ -135,14 +137,16 @@ class BackgroundService: Service() {
             notificationManager.createNotificationChannel(channel)
         }
 
-        val pendingIntent: PendingIntent = Intent(this, MainActivity::class.java).let { notificationIntent ->
-            PendingIntent.getActivity(this, 0, notificationIntent, 0)
-        }
+        val pendingIntent: PendingIntent =
+            Intent(this, MainActivity::class.java).let { notificationIntent ->
+                PendingIntent.getActivity(this, 0, notificationIntent, 0)
+            }
 
-        val builder: Notification.Builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) Notification.Builder(
-            this,
-            ANDROID_CHANNEL_ID
-        ) else Notification.Builder(this)
+        val builder: Notification.Builder =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) Notification.Builder(
+                this,
+                ANDROID_CHANNEL_ID
+            ) else Notification.Builder(this)
 
         return builder
             .setContentTitle("Lyrix")

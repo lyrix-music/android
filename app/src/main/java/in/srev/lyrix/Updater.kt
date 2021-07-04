@@ -15,7 +15,7 @@ import org.json.JSONObject
 import java.net.URL
 
 
-class Updater (val context: Context, private val updateCheckUrl: String) {
+class Updater(val context: Context, private val updateCheckUrl: String) {
 
     suspend fun start() {
         withContext(Dispatchers.IO) {
@@ -43,7 +43,10 @@ class Updater (val context: Context, private val updateCheckUrl: String) {
                 .setPositiveButton(
                     "Update now"
                 ) { dialog, which ->
-                    update(updateJson.getString("downloadUrl") ?: "https://raw.githubusercontent.com/lyrix-music/android/continuous/update/changelog.json")
+                    update(
+                        updateJson.getString("downloadUrl")
+                            ?: "https://raw.githubusercontent.com/lyrix-music/android/continuous/update/changelog.json"
+                    )
                 } // A null listener allows the button to dismiss the dialog and take no further action.
                 .setNegativeButton("Later", null)
                 .setIcon(android.R.drawable.arrow_down_float)
@@ -54,7 +57,9 @@ class Updater (val context: Context, private val updateCheckUrl: String) {
 
     fun update(targetApkUrl: String) {
         val url = targetApkUrl
-        if (url == "") { return }
+        if (url == "") {
+            return
+        }
         val i = Intent(Intent.ACTION_VIEW)
         i.data = Uri.parse(url)
         ContextCompat.startActivity(context, i, null)
@@ -83,14 +88,13 @@ class Updater (val context: Context, private val updateCheckUrl: String) {
         var version: String? = null
         try {
             val pInfo: PackageInfo =
-                context.packageManager.getPackageInfo(context.getPackageName(), 0)
+                context.packageManager.getPackageInfo(context.packageName, 0)
             version = pInfo.versionName
         } catch (e: NameNotFoundException) {
             e.printStackTrace()
         }
         return version
     }
-
 
 
 }

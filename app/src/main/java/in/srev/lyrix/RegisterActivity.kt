@@ -27,14 +27,17 @@ class RegisterActivity : AppCompatActivity() {
         val telegramView = findViewById<EditText>(R.id.registerTelegramIdTextEditView)
 
 
-
         val registerButton = findViewById<Button>(R.id.registerRegisterButton)
         registerButton.setOnClickListener {
             val userId = userIdView.text.toString()
             val password = passwordView.text.toString()
             val telegramId = telegramView.text.toString()
             if (userId == "" || password == "" || telegramId == "") {
-                Toast.makeText(this, "Please enter a valid username, password and telegram id", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    "Please enter a valid username, password and telegram id",
+                    Toast.LENGTH_SHORT
+                ).show()
                 return@setOnClickListener
             }
 
@@ -53,7 +56,6 @@ class RegisterActivity : AppCompatActivity() {
             }
 
 
-
             // Create Service
             val service: BackendService = retrofit.create(BackendService::class.java)
 
@@ -62,8 +64,10 @@ class RegisterActivity : AppCompatActivity() {
             // Request a string response from the provided URL.
             val map = JSONObject()
             if (userId == "" || password == "" || telegramId == "") {
-                Toast.makeText(this, "Please fill all the values to complete registration",
-                    Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this, "Please fill all the values to complete registration",
+                    Toast.LENGTH_SHORT
+                ).show()
                 return@setOnClickListener
             }
             map.put("username", username[0])
@@ -82,10 +86,18 @@ class RegisterActivity : AppCompatActivity() {
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
                         Log.e("lyrix.api", "Data successfully posted to the server")
-                        Toast.makeText(this@RegisterActivity, "Registration successful.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@RegisterActivity,
+                            "Registration successful.",
+                            Toast.LENGTH_SHORT
+                        ).show()
                         launchLoginActivity()
                     } else {
-                        Toast.makeText(this@RegisterActivity, "Registration failed", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@RegisterActivity,
+                            "Registration failed",
+                            Toast.LENGTH_SHORT
+                        ).show()
                         Log.e("RETROFIT_ERROR", response.code().toString())
                     }
                 }
@@ -94,7 +106,7 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         val loginButton = findViewById<Button>(R.id.registerLoginButton)
-        loginButton.setOnClickListener{launchLoginActivity()}
+        loginButton.setOnClickListener { launchLoginActivity() }
     }
 
     private fun launchLoginActivity() {

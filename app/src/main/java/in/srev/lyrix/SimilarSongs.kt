@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
@@ -53,14 +52,15 @@ class SimilarSongs : AppCompatActivity() {
 
     private fun fetchNewSongs() {
         songsList.clear()
-        val currentlyListeningSongTextView = findViewById<TextView>(R.id.activity__similar__currentlyListeningSong)
+        val currentlyListeningSongTextView =
+            findViewById<TextView>(R.id.activity__similar__currentlyListeningSong)
         if (song.track == "") {
             currentlyListeningSongTextView.text = "You are not listening to any song \uD83E\uDD14"
         } else {
             currentlyListeningSongTextView.text = "Similar to ${song.track} by ${song.artist}"
         }
 
-        lyrix.getSimilarSongs(callback = fun (song: Song, i: Int) {
+        lyrix.getSimilarSongs(callback = fun(song: Song, i: Int) {
 
             songsList.add(song)
             adapter.notifyItemInserted(i)
@@ -129,7 +129,7 @@ class SongHolder(v: View) : RecyclerView.ViewHolder(v), View.OnClickListener {
         }
 
 
-        }
+    }
 
     //4
     override fun onClick(v: View) {
@@ -143,7 +143,7 @@ class SongHolder(v: View) : RecyclerView.ViewHolder(v), View.OnClickListener {
 }
 
 
-class RecyclerAdapter(private var songs: ArrayList<Song>) : RecyclerView.Adapter<SongHolder>()  {
+class RecyclerAdapter(private var songs: ArrayList<Song>) : RecyclerView.Adapter<SongHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongHolder {
         val inflatedView = parent.inflate(R.layout.similar_songs_row, false)

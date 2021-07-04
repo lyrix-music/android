@@ -39,7 +39,8 @@ class LoginActivity : AppCompatActivity() {
             val userId = userIdView.text.toString()
             val password = passwordView.text.toString()
             if (userId == "" || password == "") {
-                Toast.makeText(this, "Please enter a valid username, password", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Please enter a valid username, password", Toast.LENGTH_SHORT)
+                    .show()
                 return@setOnClickListener
             }
 
@@ -59,7 +60,8 @@ class LoginActivity : AppCompatActivity() {
             // Request a string response from the provided URL.
             val map = JSONObject()
             if (userId == "" || password == "") {
-                Toast.makeText(this, "Please enter a valid username, password", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Please enter a valid username, password", Toast.LENGTH_SHORT)
+                    .show()
                 return@setOnClickListener
             }
             map.put("username", username[0])
@@ -86,10 +88,12 @@ class LoginActivity : AppCompatActivity() {
                         source.request(Long.MAX_VALUE) // Buffer the entire body.
 
                         val buffer: Buffer = source.buffer
-                        val jsonString = buffer.clone().readString(Charset.defaultCharset()).toString()
+                        val jsonString =
+                            buffer.clone().readString(Charset.defaultCharset()).toString()
                         Log.d(
                             BuildConfig.APPLICATION_ID,
-                            "ret ==> " + buffer.clone().readString(Charset.defaultCharset()).toString()
+                            "ret ==> " + buffer.clone().readString(Charset.defaultCharset())
+                                .toString()
                         )
                         Log.d("lyrix.api", jsonString)
 
@@ -97,23 +101,35 @@ class LoginActivity : AppCompatActivity() {
                         val token = convertedObject["token"].toString().replace("\"", "")
                         Log.d("login", "Authorization token $token")
                         if (token == "") {
-                            Toast.makeText(this@LoginActivity, "Login failed. Contact your server admin for more details.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                this@LoginActivity,
+                                "Login failed. Contact your server admin for more details.",
+                                Toast.LENGTH_SHORT
+                            ).show()
                             return@withContext
                         }
 
-                        Toast.makeText(this@LoginActivity, "Login successful.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@LoginActivity, "Login successful.", Toast.LENGTH_SHORT)
+                            .show()
                         val sharedPref = getSharedPreferences("auth", Context.MODE_PRIVATE)
-                        with (sharedPref.edit()) {
+                        with(sharedPref.edit()) {
                             putString(getString(R.string.shared_pref_token), token)
                             putString(getString(R.string.shared_pref_homeserver), host)
                             apply()
                         }
                         Log.d("login", "Shared Preferences: ${sharedPref.all}")
-                        Log.d("login", "Passing token:($token), and host:($host) to Main Activity intent")
+                        Log.d(
+                            "login",
+                            "Passing token:($token), and host:($host) to Main Activity intent"
+                        )
                         launchMainActivity()
 
                     } else {
-                        Toast.makeText(this@LoginActivity, "Login failed. Are you sure if your username and password is correct?", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@LoginActivity,
+                            "Login failed. Are you sure if your username and password is correct?",
+                            Toast.LENGTH_SHORT
+                        ).show()
                         Log.e("RETROFIT_ERROR", response.code().toString())
                     }
                 }

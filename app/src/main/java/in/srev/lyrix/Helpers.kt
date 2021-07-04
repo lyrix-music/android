@@ -4,7 +4,7 @@ import android.util.Log
 
 class Helpers {
 
-    fun ParseUserId(userId: String): List<String>  {
+    fun ParseUserId(userId: String): List<String> {
         Log.e("register", "userId @check")
         if (userId[0].toString() != "@") {
             throw IllegalArgumentException("Invalid user id. User Id should be in the format @abc@xyz.com")

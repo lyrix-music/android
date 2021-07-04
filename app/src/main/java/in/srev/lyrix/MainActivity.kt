@@ -37,10 +37,21 @@ class MainActivity : AppCompatActivity() {
         lyrix = Lyrix()
         lyrix.create(this)
 
-        Log.d("lyrix.update", "${System.currentTimeMillis() - lyrix.getSharedPreferences().getLong("last_update_request", 0)} since last update request" )
-        if (!updaterDismissed && System.currentTimeMillis() - lyrix.getSharedPreferences().getLong("last_update_request", 0) > 3.6e+6) {
+        Log.d(
+            "lyrix.update",
+            "${
+                System.currentTimeMillis() - lyrix.getSharedPreferences()
+                    .getLong("last_update_request", 0)
+            } since last update request"
+        )
+        if (!updaterDismissed && System.currentTimeMillis() - lyrix.getSharedPreferences()
+                .getLong("last_update_request", 0) > 3.6e+6
+        ) {
             Log.d("lyrix.update", "Checking for updates")
-            val updater = Updater(this, "https://raw.githubusercontent.com/lyrix-music/android/continuous/update/changelog.json")
+            val updater = Updater(
+                this,
+                "https://raw.githubusercontent.com/lyrix-music/android/continuous/update/changelog.json"
+            )
             Log.d("lyrix.info", "Lyrix v${updater.getCurrentVersion()}")
             CoroutineScope(Dispatchers.Main).launch {
                 updater.start()
@@ -67,7 +78,7 @@ class MainActivity : AppCompatActivity() {
             scrobbleToggleButton.text = getString(R.string.scrobbling)
             scrobbleToggleButton.isChecked = true
         }
-        scrobbleToggleButton.setOnClickListener{
+        scrobbleToggleButton.setOnClickListener {
             scrobblingEnabled = !scrobblingEnabled
             if (scrobblingEnabled) {
                 scrobbleToggleButton.text = getString(R.string.scrobbling)
@@ -83,7 +94,7 @@ class MainActivity : AppCompatActivity() {
             broadcastToggleButton.text = getString(R.string.broadcasting)
             broadcastToggleButton.isChecked = true
         }
-        broadcastToggleButton.setOnClickListener{
+        broadcastToggleButton.setOnClickListener {
 
             broadcastEnabled = !broadcastEnabled
 
@@ -108,7 +119,7 @@ class MainActivity : AppCompatActivity() {
 
 
         val similarSongButton = findViewById<Button>(R.id.main__similarSongsButton)
-        similarSongButton.setOnClickListener{
+        similarSongButton.setOnClickListener {
             val intent = Intent(this, SimilarSongs::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
@@ -116,6 +127,7 @@ class MainActivity : AppCompatActivity() {
 
 
     }
+
     private fun actionOnService(action: Actions) {
         if (getServiceState(this) == ServiceState.STOPPED && action == Actions.STOP) return
         Intent(this, BackgroundService::class.java).also {

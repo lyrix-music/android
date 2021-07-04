@@ -5,7 +5,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import java.util.*
 
 class MusicStandaloneReceiver : BroadcastReceiver() {
 
@@ -18,13 +17,19 @@ class MusicStandaloneReceiver : BroadcastReceiver() {
 
         val lyrix = Lyrix()
         Log.e("lyrix:intent", "Checking context")
-        if (context == null) { return }
+        if (context == null) {
+            return
+        }
         lyrix.create(context)
 
         Log.e("lyrix:auth", "Checking if user logged in")
-        if (!lyrix.isUserLoggedIn()) { return }
+        if (!lyrix.isUserLoggedIn()) {
+            return
+        }
         Log.e("lyrix:broadcast", "Checking if user is broadcast enabled")
-        if (!lyrix.isBroadcastEnabled()) { return }
+        if (!lyrix.isBroadcastEnabled()) {
+            return
+        }
         Log.e("lyrix:hs", "Connecting to homserver")
         lyrix.connectHomeserver()
 

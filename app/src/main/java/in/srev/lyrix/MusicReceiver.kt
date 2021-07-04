@@ -5,16 +5,13 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import android.widget.Switch
 import android.widget.TextView
-import android.widget.ToggleButton
-
 import java.util.*
 
 
-
 // https://stackoverflow.com/q/34389404/
-class MusicReceiver(private val mainActivity: MainActivity, private val lyrix: Lyrix) : BroadcastReceiver() {
+class MusicReceiver(private val mainActivity: MainActivity, private val lyrix: Lyrix) :
+    BroadcastReceiver() {
 
     private var lastPlayedTrack: String = ""
     private var lastPlayedArtist: String = ""
@@ -30,7 +27,7 @@ class MusicReceiver(private val mainActivity: MainActivity, private val lyrix: L
             val album = it.getStringExtra("album")
             val track = it.getStringExtra("track").toString()
             val playing = it.getBooleanExtra("playing", false)
-            Log.d("debug/interesting", "originating from package name: ${it.`package`}");
+            Log.d("debug/interesting", "originating from package name: ${it.`package`}")
 
             if ((artist == lastPlayedArtist && track == lastPlayedTrack) || !playing) {
                 return
@@ -60,7 +57,7 @@ class MusicReceiver(private val mainActivity: MainActivity, private val lyrix: L
                 lyrix.createNotification(track, artist)
 
                 lyrix.setCurrentListeningSong(track, artist) {
-                    lyrix.getLyrics() { lyrics ->
+                    lyrix.getLyrics { lyrics ->
                         lyricsView.text = lyrics
                         val now = Date().toLocaleString()
                         lastRefreshed.text = "Last synced on $now"
@@ -76,14 +73,11 @@ class MusicReceiver(private val mainActivity: MainActivity, private val lyrix: L
             }
 
             Log.e("Music", "$playing")
-            Log.e("Music", artist ?: "no artist")
+            Log.e("Music", artist)
             Log.e("Music", album ?: "no album")
-            Log.e("Music", track ?: "no track")
+            Log.e("Music", track)
         }
     }
-
-
-
 
 
 }

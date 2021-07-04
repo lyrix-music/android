@@ -7,14 +7,11 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
-import android.util.JsonReader
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import com.google.gson.JsonArray
 import com.google.gson.JsonParser
 import kotlinx.coroutines.CoroutineScope
@@ -55,11 +52,14 @@ class Lyrix {
     }
 
     fun isBroadcastEnabled(): Boolean {
-        return sharedPref.getBoolean(context.getString(R.string.shared_pref_broadcast_switch), false)
+        return sharedPref.getBoolean(
+            context.getString(R.string.shared_pref_broadcast_switch),
+            false
+        )
     }
 
     fun setBroadcastEnabled(enabled: Boolean) {
-        with (sharedPref.edit()) {
+        with(sharedPref.edit()) {
             putBoolean(context.getString(R.string.shared_pref_broadcast_switch), enabled)
             apply()
         }
@@ -71,7 +71,7 @@ class Lyrix {
     }
 
     fun setScrobbleEnabled(enabled: Boolean) {
-        with (sharedPref.edit()) {
+        with(sharedPref.edit()) {
             putBoolean(context.getString(R.string.shared_pref_scrobble), enabled)
             apply()
         }
@@ -104,7 +104,8 @@ class Lyrix {
 
     fun clearListeningSong() {
         setCurrentListeningSong("", "", null)
-        Toast.makeText(context, "Current song has been cleared from server.", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "Current song has been cleared from server.", Toast.LENGTH_SHORT)
+            .show()
     }
 
     fun getLyrics(callback: ((lyrics: String) -> Unit)?) {
@@ -130,7 +131,7 @@ class Lyrix {
                     }
                 }
             } catch (e: Exception) {
-                Log.e("lyrix.api", "${e.message.toString()} ${e.stackTraceToString().toString()}")
+                Log.e("lyrix.api", "${e.message.toString()} ${e.stackTraceToString()}")
                 return@launch
             }
 
@@ -172,7 +173,7 @@ class Lyrix {
                     }
                 }
             } catch (e: Exception) {
-                Log.e("lyrix.api", "${e.message.toString()} ${e.stackTraceToString().toString()}")
+                Log.e("lyrix.api", "${e.message.toString()} ${e.stackTraceToString()}")
                 return@launch
             }
 
@@ -180,9 +181,9 @@ class Lyrix {
     }
 
 
-    fun setCurrentListeningSong(track: String, artist: String, callback: (()->Unit)?) {
+    fun setCurrentListeningSong(track: String, artist: String, callback: (() -> Unit)?) {
         // Request a string response from the provided URL.
-        with (sharedPref.edit()) {
+        with(sharedPref.edit()) {
             putString(context.getString(R.string.shared_pref_last_track), track)
             putString(context.getString(R.string.shared_pref_last_artist), artist)
             apply()
@@ -201,8 +202,10 @@ class Lyrix {
     }
 
     fun getCurrentListeningSong(): Song {
-        val track = sharedPref.getString(context.getString(R.string.shared_pref_last_track), "") ?: ""
-        val artist =sharedPref.getString(context.getString(R.string.shared_pref_last_artist), "") ?: ""
+        val track =
+            sharedPref.getString(context.getString(R.string.shared_pref_last_track), "") ?: ""
+        val artist =
+            sharedPref.getString(context.getString(R.string.shared_pref_last_artist), "") ?: ""
         return Song(track, artist)
     }
 
@@ -231,7 +234,7 @@ class Lyrix {
                     }
                 }
             } catch (e: Exception) {
-                Log.e("lyrix.api", "${e.message.toString()} ${e.stackTraceToString().toString()}")
+                Log.e("lyrix.api", "${e.message.toString()} ${e.stackTraceToString()}")
                 return@launch
             }
 
