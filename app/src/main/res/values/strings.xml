@@ -20,4 +20,23 @@
     <string name="register_greeting_main">Welcome to Lyrix!</string>
     <string name="logo_content_description">Lyrix logo</string>
     <string name="register_button__telegramId">Telegram ID</string>
+    <string name="ic_contentDescription__youtube">Youtube</string>
+    <string name="youtube_music">Youtube Music</string>
+    <string name="soundcloud">Soundcloud</string>
+    <string name="youtube">Youtube</string>
+    <string name="spotify">Spotify</string>
+    <string name="loading_track_information">Loading track information...</string>
+    <string name="getting_artist_name">Getting artist name...</string>
+    <string name="songs_you_may_like">Songs you may like</string>
+    <string name="similar_to_your_currently_listening_song">Similar to your currently listening song</string>
+    <string name="shared_pref_last_track">in.srev.lyrix.LAST_LISTENED_TRACK_NAME</string>
+    <string name="shared_pref_last_artist">in.srev.lyrix.LAST_LISTENED_ARTIST_NAME</string>
+    <string name="broadcast">Broadcast</string>
+    <string name="broadcast_off">Broadcast Off</string>
+    <string name="broadcast_on">Broadcast On</string>
+    <string name="scrobbling">Scrobbling</string>
+    <string name="scrobble">Scrobble</string>
+    <string name="broadcasting">Broadcasting</string>
+    <string name="stopping_services">Stopping Services...</string>
+    <string name="sleeping">Sleeping</string>
 </resources>

@@ -42,20 +42,10 @@
         android:id="@+id/lastRefreshedLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
         android:text="Not synced with server yet."
-        app:layout_constraintStart_toStartOf="@+id/toggleButton"
-        app:layout_constraintTop_toBottomOf="@+id/toggleButton" />
-
-    <ToggleButton
-        android:id="@+id/toggleButton"
-        style="@android:style/Widget.Material.Button.Toggle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ToggleButton"
-        android:textOff="BROADCAST OFF"
-        android:textOn="BROADCAST ON"
-        app:layout_constraintStart_toStartOf="@+id/artistName"
-        app:layout_constraintTop_toBottomOf="@+id/artistName" />
+        app:layout_constraintStart_toStartOf="@+id/main__scrobbleToggleButton"
+        app:layout_constraintTop_toBottomOf="@+id/main__scrobbleToggleButton" />
 
     <ScrollView
         android:layout_width="0dp"
@@ -79,17 +69,42 @@
 
     </ScrollView>
 
-    <Switch
-        android:id="@+id/scrobbleSwitch"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/main__similarSongsButton"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:showText="false"
-        android:splitTrack="false"
+        android:layout_marginStart="6dp"
+        android:insetBottom="0sp"
+        android:text="Related"
+        app:icon="@drawable/ic_similar"
+        app:layout_constraintBottom_toBottomOf="@+id/main__broadcastToggleButton"
+        app:layout_constraintStart_toEndOf="@+id/main__broadcastToggleButton"
+        app:layout_constraintTop_toTopOf="@+id/main__broadcastToggleButton" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/main__broadcastToggleButton"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checkable="true"
+        android:insetBottom="0sp"
+        android:text="BROADCAST"
+        app:icon="@drawable/ic_broadcast"
+        app:layout_constraintStart_toStartOf="@+id/artistName"
+        app:layout_constraintTop_toBottomOf="@+id/artistName" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/main__scrobbleToggleButton"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checkable="true"
+        android:insetBottom="0sp"
         android:text="Scrobble"
-        app:layout_constraintBottom_toBottomOf="@+id/toggleButton"
-        app:layout_constraintStart_toEndOf="@+id/toggleButton"
-        app:layout_constraintTop_toTopOf="@+id/toggleButton" />
+        app:icon="@drawable/ic_ytmusic"
+        app:layout_constraintStart_toStartOf="@+id/main__broadcastToggleButton"
+        app:layout_constraintTop_toBottomOf="@+id/main__broadcastToggleButton" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

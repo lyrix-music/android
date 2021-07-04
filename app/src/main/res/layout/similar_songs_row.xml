@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8sp"
+        android:padding="8sp"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8sp">
+
+
+            <TextView
+                android:id="@+id/card__trackTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="@string/loading_track_information"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/card__artistTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/getting_artist_name"
+                app:layout_constraintStart_toStartOf="@+id/card__trackTextView"
+                app:layout_constraintTop_toBottomOf="@+id/card__trackTextView" />
+
+            <ImageButton
+                android:id="@+id/card__buttonYoutube"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="8sp"
+                android:layout_marginTop="4sp"
+                android:layout_marginBottom="8sp"
+                android:src="@drawable/ic_youtube"
+                app:layout_constraintStart_toStartOf="@+id/card__artistTextView"
+                app:layout_constraintTop_toBottomOf="@+id/card__artistTextView"
+                app:tint="@color/design_default_color_primary"
+                android:contentDescription="@string/youtube" />
+
+            <ImageButton
+                android:id="@+id/card__buttonSpotify"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="8sp"
+
+                android:layout_marginBottom="8sp"
+                android:src="@drawable/ic_spotify"
+                app:layout_constraintStart_toEndOf="@+id/card__buttonYoutube"
+                app:layout_constraintTop_toTopOf="@+id/card__buttonYoutube"
+                app:tint="@color/design_default_color_primary"
+                android:contentDescription="@string/spotify" />
+
+            <ImageButton
+                android:id="@+id/card__buttonSoundcloud"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="8sp"
+
+                android:layout_marginBottom="8sp"
+                android:src="@drawable/ic_soundcloud"
+                app:layout_constraintStart_toEndOf="@+id/card__buttonSpotify"
+                app:layout_constraintTop_toTopOf="@+id/card__buttonSpotify"
+                app:tint="@color/design_default_color_primary"
+                android:contentDescription="@string/soundcloud" />
+
+            <ImageButton
+                android:id="@+id/card__buttonYTMusic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="8sp"
+
+                android:layout_marginBottom="8sp"
+                android:src="@drawable/ic_ytmusic"
+                app:layout_constraintStart_toEndOf="@+id/card__buttonSoundcloud"
+                app:layout_constraintTop_toTopOf="@+id/card__buttonSoundcloud"
+                app:tint="@color/design_default_color_primary"
+                android:contentDescription="@string/youtube_music" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

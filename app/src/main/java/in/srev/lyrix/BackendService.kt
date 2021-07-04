@@ -21,4 +21,8 @@ interface BackendService {
     @GET("/user/player/local/current_song/lyrics")
     suspend fun getLyrics(@Header("Authorization") token: String): Response<ResponseBody>
 
+
+    @GET("/user/player/local/current_song/similar")
+    suspend fun getSimilarSong(@Header("Authorization") token: String): Response<ResponseBody>
+
 }

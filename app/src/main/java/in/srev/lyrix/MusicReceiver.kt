@@ -43,13 +43,13 @@ class MusicReceiver(private val mainActivity: MainActivity, private val lyrix: L
             val playingNow = mainActivity.findViewById<TextView>(R.id.playingRightNow)
             val trackName = mainActivity.findViewById<TextView>(R.id.trackName)
             val artistName = mainActivity.findViewById<TextView>(R.id.artistName)
-            val broadcastSwitch = mainActivity.findViewById<ToggleButton>(R.id.toggleButton)
+
             val lastRefreshed = mainActivity.findViewById<TextView>(R.id.lastRefreshedLabel)
             val lyricsView = mainActivity.findViewById<TextView>(R.id.lyricsView)
-            val showStatus = broadcastSwitch.isChecked && (artist != "" || track != "")
+            val showStatus = mainActivity.broadcastEnabled && (artist != "" || track != "")
             Log.e(
                 "lyrix.ui",
-                "Broadcast switch: ${broadcastSwitch.isChecked}. Show Status: $showStatus"
+                "Broadcast switch: ${mainActivity.broadcastEnabled}. Show Status: $showStatus"
             )
             if (showStatus) {
                 playingNow.text = "You are now playing"

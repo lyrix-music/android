@@ -7,11 +7,16 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
+import android.util.JsonReader
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonArray
+import com.google.gson.JsonParser
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -132,8 +137,56 @@ class Lyrix {
         }
     }
 
+    fun getSimilarSongs(callback: ((song: Song, i: Int) -> Unit)?) {
+        Log.d("lyrix.similar", "Gettings similar songs")
+        // var songs: ArrayList<Song>
+        var count = 0
+        CoroutineScope(Dispatchers.IO).launch {
+            // Do a GET request to the server
+            Log.d("lyrix.similar", "Getting data to server")
+            try {
+                val response = service.getSimilarSong("Bearer ${token()}")
+
+                withContext(Dispatchers.Main) {
+                    if (response.isSuccessful) {
+                        Log.e("lyrix.similar", "Similar songs successfully received to the server")
+
+                        val jp = JsonParser.parseReader(response.body()?.charStream())
+                        val similarSongsResponse: JsonArray = jp.asJsonArray
+                        for (i in 0 until similarSongsResponse.size()) {
+                            val songInstance = similarSongsResponse[i].asJsonObject
+                            val track = songInstance.get("track").asString
+                            val artist = songInstance.get("artist").asString
+                            if (track == "") {
+                                // skip empty songs
+                                continue
+                            }
+                            Log.d("lyrix.similar", "${track} by ${artist}")
+                            count += 1
+                            callback?.invoke(Song(track = track, artist = artist), count)
+                        }
+                        return@withContext
+
+                    } else {
+                        Log.e("RETROFIT_ERROR", response.code().toString())
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e("lyrix.api", "${e.message.toString()} ${e.stackTraceToString().toString()}")
+                return@launch
+            }
+
+        }
+    }
+
+
     fun setCurrentListeningSong(track: String, artist: String, callback: (()->Unit)?) {
         // Request a string response from the provided URL.
+        with (sharedPref.edit()) {
+            putString(context.getString(R.string.shared_pref_last_track), track)
+            putString(context.getString(R.string.shared_pref_last_artist), artist)
+            apply()
+        }
         val map = JSONObject()
         map.put("artist", artist)
         map.put("track", track)
@@ -145,6 +198,12 @@ class Lyrix {
         postData(map, callback)
         Log.d("lyrix.api", "sent post request.")
 
+    }
+
+    fun getCurrentListeningSong(): Song {
+        val track = sharedPref.getString(context.getString(R.string.shared_pref_last_track), "") ?: ""
+        val artist =sharedPref.getString(context.getString(R.string.shared_pref_last_artist), "") ?: ""
+        return Song(track, artist)
     }
 
     private fun postData(data: JSONObject, callback: (() -> Unit)?) {

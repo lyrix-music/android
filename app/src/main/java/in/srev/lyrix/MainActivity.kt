@@ -1,18 +1,24 @@
 package `in`.srev.lyrix
 
 import android.content.*
+import android.content.res.ColorStateList
+import android.content.res.Resources.Theme
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.*
+import androidx.annotation.ColorInt
 import androidx.appcompat.app.AppCompatActivity
 import com.github.javiersantos.appupdater.AppUpdater
 import com.github.javiersantos.appupdater.enums.Display
 import com.github.javiersantos.appupdater.enums.UpdateFrom
-import retrofit2.Retrofit
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.color.MaterialColors
 import java.util.*
 
 
@@ -22,6 +28,10 @@ const val ANDROID_CHANNEL_ID = "in.srev.lyrix.ANDROID"
 class MainActivity : AppCompatActivity() {
 
     private lateinit var lyrix: Lyrix
+    private var scrobblingEnabled: Boolean = false
+    var broadcastEnabled: Boolean = false
+
+
     private lateinit var musicReceiver: MusicReceiver
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,19 +65,36 @@ class MainActivity : AppCompatActivity() {
         val filter = registerBroadcastListener()
         val musicReceiver = MusicReceiver(mainActivity = this, lyrix = lyrix)
 
-        val broadcastToggleButton: ToggleButton = findViewById(R.id.toggleButton)
+        val scrobbleToggleButton = findViewById<MaterialButton>(R.id.main__scrobbleToggleButton)
+        if (scrobblingEnabled) {
+            scrobbleToggleButton.text = getString(R.string.scrobbling)
+        }
+        scrobbleToggleButton.setOnClickListener{
+            scrobblingEnabled = !scrobblingEnabled
+            if (scrobblingEnabled) {
+                scrobbleToggleButton.text = getString(R.string.scrobbling)
+            } else {
+                scrobbleToggleButton.text = getString(R.string.scrobble)
+            }
+            lyrix.setScrobbleEnabled(scrobblingEnabled)
+        }
 
-        val serviceState = getServiceState(this)
-        if (serviceState == ServiceState.STARTED) {
-            broadcastToggleButton.isChecked = true
+        val broadcastToggleButton = findViewById<MaterialButton>(R.id.main__broadcastToggleButton)
+        if (broadcastEnabled) {
+            broadcastToggleButton.text = getString(R.string.broadcasting)
         }
         broadcastToggleButton.setOnClickListener{
-            if (broadcastToggleButton.isChecked) {
+
+            broadcastEnabled = !broadcastEnabled
+
+            if (broadcastEnabled) {
                 actionOnService(Actions.START)
                 // register the broadcast
                 lyrix.setBroadcastEnabled(true)
                 registerReceiver(musicReceiver, filter)
+                broadcastToggleButton.text = getString(R.string.broadcasting)
             } else {
+                broadcastToggleButton.text = getString(R.string.stopping_services)
                 actionOnService(Actions.STOP)
                 lyrix.setBroadcastEnabled(false)
                 try {
@@ -75,15 +102,17 @@ class MainActivity : AppCompatActivity() {
                 } catch (e: IllegalArgumentException) {
                     // ¯\_(ツ)_/¯
                 }
+                broadcastToggleButton.text = getString(R.string.sleeping)
             }
         }
 
-        val scrobblerSwitch = findViewById<Switch>(R.id.scrobbleSwitch)
-        scrobblerSwitch.isChecked = lyrix.isScrobbleEnabled()
-        scrobblerSwitch.setOnClickListener {
-            lyrix.setScrobbleEnabled(scrobblerSwitch.isChecked)
-        }
 
+        val similarSongButton = findViewById<Button>(R.id.main__similarSongsButton)
+        similarSongButton.setOnClickListener{
+            val intent = Intent(this, SimilarSongs::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
+        }
 
 
     }
@@ -204,7 +233,7 @@ class MainActivity : AppCompatActivity() {
         return filter
     }
 
-    private fun returnToLoginActivity(): String {
+    fun returnToLoginActivity(): String {
         Toast.makeText(this@MainActivity, "Welcome back to lyrix.", Toast.LENGTH_SHORT).show()
         val intent = Intent(this, LoginActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_TASK_ON_HOME
