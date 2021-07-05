@@ -172,6 +172,12 @@ class MainActivity : AppCompatActivity() {
         filter.addAction("org.schabi.newpipe.playbackcomplete")
         filter.addAction("org.schabi.newpipe.queuechanged")
 
+        // musicplayer go
+        filter.addAction("in.srev.musicplayergo.metachanged")
+        filter.addAction("in.srev.musicplayergo.playstatechanged")
+        filter.addAction("in.srev.musicplayergo.playbackcomplete")
+        filter.addAction("in.srev.musicplayergo.queuechanged")
+
         // youtube music
         filter.addAction("com.google.android.apps.youtube.music.metachanged")
         filter.addAction("com.google.android.apps.youtube.music.playstatechanged")
