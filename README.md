@@ -29,7 +29,7 @@ The Lyrix Android client is experimental, and is ready for testers.
 Early testers can get started by grabbing
 the APK from [releases][lyrix-releases].
 
-Double-click the AppImage and complete the login to start using
+Install the `*.apk` and complete the login to start using
 Lyrix right away.
 
 
