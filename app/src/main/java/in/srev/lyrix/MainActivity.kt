@@ -22,8 +22,7 @@ const val ANDROID_CHANNEL_ID = "in.srev.lyrix.ANDROID"
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var lyrix: Lyrix
-    private var updaterDismissed: Boolean = false
+    lateinit var lyrix: Lyrix
     private var scrobblingEnabled: Boolean = false
     var broadcastEnabled: Boolean = false
 
@@ -44,22 +43,18 @@ class MainActivity : AppCompatActivity() {
                     .getLong("last_update_request", 0)
             } since last update request"
         )
-        if (!updaterDismissed && System.currentTimeMillis() - lyrix.getSharedPreferences()
+        if (System.currentTimeMillis() - lyrix.getSharedPreferences()
                 .getLong("last_update_request", 0) > 3.6e+6
         ) {
             Log.d("lyrix.update", "Checking for updates")
             val updater = Updater(
                 this,
-                "https://raw.githubusercontent.com/lyrix-music/android/continuous/update/changelog.json"
+                lyrix,
+                "https://srev.in/lyrix/update/changelog.json"
             )
             Log.d("lyrix.info", "Lyrix v${updater.getCurrentVersion()}")
             CoroutineScope(Dispatchers.Main).launch {
                 updater.start()
-                updaterDismissed = true
-                lyrix.getSharedPreferences().edit {
-                    this.putLong("last_update_request", System.currentTimeMillis())
-                    this.apply()
-                }
             }
         }
         // check if the user is logged in.

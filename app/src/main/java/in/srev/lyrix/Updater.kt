@@ -8,6 +8,7 @@ import android.content.pm.PackageManager.NameNotFoundException
 import android.net.Uri
 import android.util.Log
 import androidx.core.content.ContextCompat
+import androidx.core.content.edit
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONException
@@ -15,7 +16,7 @@ import org.json.JSONObject
 import java.net.URL
 
 
-class Updater(val context: Context, private val updateCheckUrl: String) {
+class Updater(val context: Context, val lyrix: Lyrix, private val updateCheckUrl: String) {
 
     suspend fun start() {
         withContext(Dispatchers.IO) {
@@ -55,7 +56,7 @@ class Updater(val context: Context, private val updateCheckUrl: String) {
 
     }
 
-    fun update(targetApkUrl: String) {
+    fun update(targetApkUrl: String, ) {
         val url = targetApkUrl
         if (url == "") {
             return
@@ -63,6 +64,12 @@ class Updater(val context: Context, private val updateCheckUrl: String) {
         val i = Intent(Intent.ACTION_VIEW)
         i.data = Uri.parse(url)
         ContextCompat.startActivity(context, i, null)
+
+        lyrix.getSharedPreferences().edit {
+            this.putLong("last_update_request", System.currentTimeMillis())
+            this.apply()
+        }
+
     }
 
     private fun getChangelogFormatted(updateJson: JSONObject): String {
