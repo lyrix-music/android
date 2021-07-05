@@ -1,11 +1,9 @@
 {
-  "latestVersion": "0.3.1",
+  "latestVersion": "0.3.2",
   "latestVersionCode": "1",
   "url": "https://github.com/lyrix-music/android/releases",
   "releaseNotes": [
-    "- Improve User Interface",
-    "- Fix bugs in broadcast button and scrobble button",
-    "- Get similar songs that you may like with 'Related' button!"
+    "- Adds support for Lyrix Music Player GO"
   ],
   "downloadUrl": "https://github.com/lyrix-music/android/releases/download/continuous/app-debug.apk"
 }
