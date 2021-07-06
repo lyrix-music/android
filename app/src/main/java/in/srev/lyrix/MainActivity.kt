@@ -47,15 +47,7 @@ class MainActivity : AppCompatActivity() {
                 .getLong("last_update_request", 0) > 3.6e+6
         ) {
             Log.d("lyrix.update", "Checking for updates")
-            val updater = Updater(
-                this,
-                lyrix,
-                "https://srev.in/lyrix/update/changelog.json"
-            )
-            Log.d("lyrix.info", "Lyrix v${updater.getCurrentVersion()}")
-            CoroutineScope(Dispatchers.Main).launch {
-                updater.start()
-            }
+            checkForUpdates(false)
         }
         // check if the user is logged in.
         if (!lyrix.isUserLoggedIn()) {
@@ -121,6 +113,18 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+    }
+
+    private fun checkForUpdates(showUpToDateMessage: Boolean) {
+        val updater = Updater(
+            this,
+            lyrix,
+            "https://srev.in/lyrix/update/changelog.json"
+        )
+        Log.d("lyrix.info", "Lyrix v${updater.getCurrentVersion()}")
+        CoroutineScope(Dispatchers.Main).launch {
+            updater.start(showUpToDateMessage)
+        }
     }
 
     private fun actionOnService(action: Actions) {
@@ -270,6 +274,10 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.clearStatusMenuItem -> {
                 lyrix.clearListeningSong()
+                true
+            }
+            R.id.checkForUpdatesMenuItem -> {
+                checkForUpdates(true)
                 true
             }
             else -> super.onOptionsItemSelected(item)

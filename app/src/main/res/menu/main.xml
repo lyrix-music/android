@@ -3,6 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/checkForUpdatesMenuItem"
+        android:icon="@android:drawable/ic_popup_sync"
+        android:title="Check for Updates"
+        android:visible="true" />
+    <item
         android:id="@+id/clearStatusMenuItem"
         android:icon="@android:drawable/ic_input_delete"
         android:title="Clear Status" />

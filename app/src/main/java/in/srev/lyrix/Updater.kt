@@ -9,6 +9,7 @@ import android.net.Uri
 import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.core.content.edit
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONException
@@ -18,7 +19,10 @@ import java.net.URL
 
 class Updater(val context: Context, val lyrix: Lyrix, private val updateCheckUrl: String) {
 
-    suspend fun start() {
+    private var showUpToDate: Boolean = false
+
+    suspend fun start(showUpToDate: Boolean) {
+        this.showUpToDate = showUpToDate
         withContext(Dispatchers.IO) {
             checkUpdates()
         }
@@ -32,7 +36,7 @@ class Updater(val context: Context, val lyrix: Lyrix, private val updateCheckUrl
         val latestVersion = updateJson.getString("latestVersion").toString()
         Log.d("lyrix.update", "Latest lyrix version is '$latestVersion'")
         if (latestVersion == currentVersion) {
-            return
+            return isUpToDate()
         }
 
         ContextCompat.getMainExecutor(context).execute {
@@ -54,6 +58,21 @@ class Updater(val context: Context, val lyrix: Lyrix, private val updateCheckUrl
                 .show()
         }
 
+    }
+
+    private fun isUpToDate() {
+        if (! this.showUpToDate) {
+            return
+        }
+        ContextCompat.getMainExecutor(context).execute {
+            // This is where your UI code goes.
+            AlertDialog.Builder(context)
+                .setTitle("Lyrix is up-to-date!")
+                .setMessage("Indeed it is.") // Specifying a listener allows you to take an action before dismissing the dialog.
+                .setNegativeButton("Ok", null)
+                .setIcon(android.R.drawable.arrow_down_float)
+                .show()
+        }
     }
 
     fun update(targetApkUrl: String, ) {
