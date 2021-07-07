@@ -1,9 +1,10 @@
 {
-  "latestVersion": "0.3.3",
+  "latestVersion": "0.3.4",
   "latestVersionCode": "1",
   "url": "https://github.com/lyrix-music/android/releases",
   "releaseNotes": [
-    "- Adds support for Lyrix Music Player GO"
+    "- Adds support for Lyrix Music Player GO",
+    "- Adds a check-for-update button "
   ],
-  "downloadUrl": "https://github.com/lyrix-music/android/releases/download/continuous/app-debug.apk"
+  "downloadUrl": "https://github.com/lyrix-music/android/releases/download/v0.3.4/app-debug.apk"
 }
