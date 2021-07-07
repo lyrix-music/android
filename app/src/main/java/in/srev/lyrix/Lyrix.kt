@@ -88,6 +88,8 @@ class Lyrix {
     // checks if the user is logged in. If the user has a token in the shared preferences, we can confirm
     // that the user has logged in.
     fun isUserLoggedIn(): Boolean {
+        if (hostname() == "") { return false }
+        if (token() == "") { return false }
         if (sharedPref.contains(context.getString(R.string.shared_pref_token))) {
             return true
         }
