@@ -9,7 +9,6 @@ import android.net.Uri
 import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.core.content.edit
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONException
