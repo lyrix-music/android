@@ -4,7 +4,8 @@
   "url": "https://github.com/lyrix-music/android/releases",
   "releaseNotes": [
     "- Adds support for Lyrix Music Player GO",
-    "- Adds a check-for-update button "
+    "- Adds a check-for-update button ",
+    "- Fix app not installed issue, create signed builds"
   ],
-  "downloadUrl": "https://github.com/lyrix-music/android/releases/download/v0.3.4/app-debug.apk"
+  "downloadUrl": "https://github.com/lyrix-music/android/releases/download/v0.3.5/Lyrix-v0.3.5.apk"
 }
