@@ -1,0 +1,15 @@
+Lyrix is an open source music federation system, helping to 
+connect music fans, receiving their music intents from their 
+local music player, and sharing it with your friends.
+
+Features
+
+* Supports most music players
+* Optional Spotify integration
+
+Source Code:
+
+The source code is available at:
+https://github.com/lyrix-music/android
+
+
