@@ -1,8 +1,10 @@
 {
-  "latestVersion": "0.3.5",
+  "latestVersion": "0.3.6",
   "latestVersionCode": "1",
   "url": "https://github.com/lyrix-music/android/releases",
   "releaseNotes": [
+    "- Fix a bug on initial start, if hostname is empty",
+    "- Clear all tasks on hitting back if user is not logged in",
     "- Adds support for Lyrix Music Player GO",
     "- Adds a check-for-update button ",
     "- Fix app not installed issue, create signed builds"
