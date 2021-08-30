@@ -9,7 +9,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.edit
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -54,6 +53,7 @@ class MainActivity : AppCompatActivity() {
             // the user is not logged in.
             // redirect to the login the screen
             returnToLoginActivity()
+            return
         }
 
         val filter = registerBroadcastListener()
@@ -253,7 +253,7 @@ class MainActivity : AppCompatActivity() {
     fun returnToLoginActivity(): String {
         Toast.makeText(this@MainActivity, "Welcome back to lyrix.", Toast.LENGTH_SHORT).show()
         val intent = Intent(this, LoginActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_TASK_ON_HOME
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         return ""
     }
